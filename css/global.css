@@ -1,0 +1,199 @@
+:root {
+    --color-primary: #8B0000; 
+    --color-secondary: #D4AF37; 
+    
+    --color-success: #28a745; 
+    --color-error: #dc3545;
+    
+    --color-verde-salvia: #A8B3A7;
+    --color-creme: #FAF0E6;
+    --color-azul-marinho: #1A237E;
+    --color-text-dark: #333333;
+    --color-text-light: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    height: 100%;
+}
+
+.main-background {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    padding: 40px 20px;
+    min-height: 100vh;
+    z-index: 1;
+    position: relative;
+    background: linear-gradient(135deg, var(--color-verde-salvia) 0%, #E0E4E0 100%);
+    overflow: hidden;
+}
+
+.main-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='48' viewBox='0 -960 960 960' width='48'%3E%3Cpath fill='%23D4AF37' d='M440-800v-80h80v80h-80Zm80 240v-80h240v-80H520v-80h-80v80H200v80h240v80h80Zm0 240v-80h240v-80H520v-80h-80v80H200v80h240v80h80Zm-80 80q-33 0-56.5-23.5T400-360v-240H200v240q0 33 23.5 56.5T280-280h400q33 0 56.5-23.5T760-360v-240H560v240q0 33-23.5 56.5T480-280H440Z'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 150px 150px;
+    background-position: 0 0;
+    opacity: 0.08;
+}
+
+.main-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='48' viewBox='0 -960 960 960' width='48'%3E%3Cpath fill='%23A8B3A7' d='M480-200q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-200Zm120-120 170-170q17-17 17-42.5t-17-42.5L594-720q17-17 42.5-17t42.5 17L850-570q17 17 17 42.5t-17 42.5L640-320ZM480-480q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-480ZM480-480q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-480Z'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 80px 80px;
+    background-position: 50px 50px;
+    opacity: 0.05;
+}
+
+.container-content {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 800px;
+    z-index: 2;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.separator-line {
+    height: 1px;
+    background-color: #eee;
+    margin: 20px 0;
+}
+
+/* 4. TÍTULOS E TIPOGRAFIA */
+.title-bordeaux {
+    font-family: 'Playfair Display', serif;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+/* 5. ESTILOS DE FORMULÁRIO E INPUTS */
+.input-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"], 
+input[type="password"], 
+input[type="number"], 
+input[type="email"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: var(--color-secondary);
+    outline: none;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary, .btn.vermelho {
+    background-color: var(--color-primary);
+    color: var(--color-creme);
+    box-shadow: 0 4px 10px rgba(139, 0, 0, 0.4);
+}
+
+.btn-primary:hover, .btn.vermelho:hover {
+    background-color: #A50000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(139, 0, 0, 0.6);
+}
+
+.btn-secondary, .btn.dourado {
+    background-color: var(--color-secondary);
+    color: var(--color-azul-marinho);
+    border: 2px solid var(--color-secondary);
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
+}
+
+.btn-secondary:hover, .btn.dourado:hover {
+    background-color: #E2BC4B;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(212, 175, 55, 0.6);
+}
+
+.icon-btn {
+    background: none;
+    border: 1px solid var(--color-secondary);
+    border-radius: 5px;
+    color: var(--color-secondary);
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.icon-btn:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-azul-marinho);
+}
+
+.cupom-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tag-status-ativo { color: var(--color-success); font-weight: bold; }
+.tag-status-utilizado { color: var(--color-secondary); font-weight: bold; }
+.tag-status-vencido { color: var(--color-error); font-weight: bold; }
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}

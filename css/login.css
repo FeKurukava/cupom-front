@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("https://i.pinimg.com/1200x/10/6d/ab/106dab1bc224ea1099b91ebdecdb3932.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    width: 350px;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    border: 1px solid #e7d9b8;
+}
+
+h2 {
+    margin: 0;
+    color: #b8860b; 
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #6b6b6b;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 10px;
+    color: #8a6f3a;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    border-radius: 12px;
+    border: 1px solid #d4c7a3;
+    font-size: 14px;
+}
+
+.btn-login {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    background: #b30000; 
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-login:hover {
+    background: #800000; 
+}
+
+.register {
+    margin-top: 20px;
+}
+
+.register a {
+    color: #b30000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Cupons</title>
+    <link rel="stylesheet" href="../css/meus-cupom.css"> </head>
+<body>
+    <header>
+        <h1>Minha Área de Cupons</h1>
+    </header>
+
+    <main class="container">
+        <section class="filters-section">
+            <h2>Filtros</h2>
+            <div class="filter-group">
+                <label for="status-filter">Status do Cupom:</label>
+                <select id="status-filter">
+                    <option value="ativos">Cupons Ativos (A reservar / Reservados)</option>
+                    <option value="utilizados">Cupons Já Utilizados</option>
+                    <option value="vencidos">Cupons Vencidos e Não Utilizados</option>
+                </select>
+                </div>
+            <button id="apply-filters-btn">Aplicar Filtros</button>
+        </section>
+
+        <section class="cupons-list">
+            <h2 id="list-title">Cupons Reservados/Disponibilizados</h2>
+            <div id="cupons-container" class="grid-layout">
+                <p id="loading-message">Carregando seus cupons...</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/associado.js"></script>
+    <script src="meus-cupons.js"></script> </body>
+</html>

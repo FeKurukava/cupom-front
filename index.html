@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campanha de Natal - Residencial Anchieta</title>
+    
+    <link rel="stylesheet" href="css/global.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        .main-background {
+            align-items: center; 
+        }
+        .intro-content {
+            text-align: center;
+            padding: 10px; 
+        }
+        .titulo {
+            font-size: 2.5em;
+            font-weight: 600;
+            color: var(--color-azul-marinho); 
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            font-family: 'Playfair Display', Georgia, serif; 
+        }
+        .descricao {
+            font-size: 1.1em;
+            color: #444;
+            margin-bottom: 40px;
+            max-width: 85%;
+            line-height: 1.5;
+            margin: 0 auto 40px auto; 
+        }
+        .botoes {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        @media (max-width: 600px) {
+             .container-content {
+                background-color: transparent;
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="main-background">
+        
+        <div class="container-content">
+             <div class="intro-content">
+                <h1 class="titulo">Campanha de Natal<br>Residencial Anchieta</h1>
+
+                <p class="descricao">
+                    Participe da campanha especial de fim de ano!  
+                    Cadastre-se, faça login e aproveite cupons exclusivos 
+                    dos comércios parceiros.
+                </p>
+
+                <div class="botoes">
+                    <a href="../cupom-front/frontend/login.html" class="btn btn-primary">Fazer Login</a>
+                    <a href="../cupom-front/frontend/register.html" class="btn btn-secondary">Cadastrar</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthenticationAndRedirect();
+        });
+    </script>
+</body>
+</html>

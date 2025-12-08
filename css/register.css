@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Poppins, sans-serif;
+}
+
+.containerGeral {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("https://i.pinimg.com/1200x/10/6d/ab/106dab1bc224ea1099b91ebdecdb3932.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formCard {
+    width: 380px;
+    background: rgba(255, 255, 255, 0.88);
+    padding: 40px 35px;
+    border-radius: 14px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.25);
+    backdrop-filter: blur(5px);
+}
+
+.titulo {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+.formUsuario {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.campoInput input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1px solid #cfcfcf;
+    border-radius: 6px;
+    outline: none;
+}
+
+.campoCheck {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.botaoRegistrar {
+    width: 100%;
+    padding: 12px;
+    background-color: #b30000;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.botaoRegistrar:hover {
+    background-color: #800000;
+}
