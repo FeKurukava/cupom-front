@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Cupom</title>
+
+    <link rel="stylesheet" href="../../css/meus-cupom.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,check_circle,list,logout" />
+</head>
+
+<style>
+    #cupom-form .input-group input,
+    #cupom-form .input-group select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        font-size: 1rem;
+    }
+
+    #cupom-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: var(--color-text-dark);
+    }
+</style>
+
+<body>
+<main class="main-background">
+    <div class="container-content">
+
+        <header class="content-header">
+            <h1 class="title-bordeaux">Cadastrar Cupom</h1>
+
+            <div class="header-actions" style="display: flex; gap: 10px;">
+                <a href="home.html" class="btn btn-secondary">Voltar</a>
+            </div>
+        </header>
+
+        <div class="separator-line"></div>
+
+        <form id="cupom-form">
+
+            <div class="input-group">
+                <label>Título do Cupom</label>
+                <input type="text" id="titulo-cupom" required>
+            </div>
+
+            <div class="input-group">
+                <label>Data de Início</label>
+                <input type="date" id="inicio-cupom" required>
+            </div>
+
+            <div class="input-group">
+                <label>Data de Término</label>
+                <input type="date" id="fim-cupom" required>
+            </div>
+
+            <div class="input-group">
+                <label>Percentual de Desconto (%)</label>
+                <input type="number" min="1" max="100" id="desconto-cupom" required>
+            </div>
+
+            <div class="input-group">
+                <label>Quantidade de Cupons</label>
+                <input type="number" min="1" id="quantidade-cupom" required>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                Gerar Cupons
+            </button>
+        </form>
+
+        <p id="mensagem-cupom" style="margin-top: 20px; text-align: center; font-weight: bold;"></p>
+    </div>
+</main>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/utils.js"></script>
+<script src="../../js/cupom.js"></script>
+</body>
+</html>

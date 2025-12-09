@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterDropdown = document.getElementById('filter-dropdown');
     const applyFiltersBtn = document.getElementById('apply-filters-btn');
     const statusFilter = document.getElementById('status-filter');
-    const cuponsContainer = document.getElementById('cupons-list-container');
+    const cuponsContainer = document.getElementById('cupons-container');
     
     
     filterBtn.addEventListener('click', () => {

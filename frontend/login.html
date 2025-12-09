@@ -54,40 +54,53 @@
         </div>
     </main>
 
-    <script src="js/auth.js"></script>
-    <script src="js/api.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            checkAuthenticationAndRedirect();
-        });
-        
         document.getElementById('login-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const identifier = document.getElementById('identifier').value;
-            const password = document.getElementById('password').value;
+
+            const identifier = document.getElementById('identifier').value.trim();
+            const password = document.getElementById('password').value.trim();
             const messageElement = document.getElementById('login-message');
-            messageElement.textContent = ''; 
+            messageElement.textContent = '';
 
             try {
-                let response = await loginUser(identifier, password, 'associado');
-                let userType = 'associado';
-                
-                if (!response) {
-                    response = await loginUser(identifier, password, 'comerciante');
-                    userType = 'comerciante';
+                if (identifier.replace(/\D/g, "").length <= 11) {
+                    const resp = await apiRequest("/auth/login", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            cpf: identifier,
+                            senha: password
+                        })
+                    });
+
+                    localStorage.setItem("token", resp.token);
+                    salvarUsuarioLogado({ tipo: "ASSOCIADO", cpf: identifier });
+                    window.location.href = "associado/home.html";
+                    return;
                 }
 
-                if (response && response.token) {
-                    setSession(response.token, userType, identifier);
-                    checkAuthenticationAndRedirect(); 
-                } else {
-                    messageElement.textContent = 'Credenciais inválidas. Verifique seu CPF/CNPJ e senha.';
-                }
+                const resp = await apiRequest("/auth/comerciante/login", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        cpf: identifier,
+                        senha: password
+                    })
+                });
+
+                localStorage.setItem("token", resp.token);
+                salvarUsuarioLogado({ tipo: "COMERCANTE", cnpj: identifier });
+                window.location.href = "comerciante/home.html";
+
             } catch (error) {
-                messageElement.textContent = 'Erro ao comunicar com o servidor. Tente novamente.';
-                console.error('Login Error:', error);
+                console.error(error);
+                messageElement.textContent = "Credenciais inválidas. Verifique seus dados.";
             }
         });
     </script>
+
+
 </body>
 </html>
