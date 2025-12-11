@@ -1,60 +1,193 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Cadastro de Usuário</title>
-    
-    <link rel="stylesheet" href="../css/global.css"> 
+
+    <link rel="stylesheet" href="../css/global.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <style>
+        .form-row{margin-bottom:12px;text-align:left;}
+        .form-row label{display:block;font-weight:600;margin-bottom:6px;font-size:0.95rem;}
+        .side-by-side{display:flex;gap:8px}
+        .side-by-side .input-group{flex:1}
+        .helper-error{color:#b00020;font-size:0.85rem;margin-top:6px;display:none}
+        .hidden{display:none}
+        .group-title{font-weight:700;margin-top:10px;margin-bottom:6px}
+        .container-content{background:#fff;padding:22px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.09);margin:20px auto}
+        .input-group input,.input-group select{width:100%;padding:10px 12px;border-radius:6px;border:1px solid #ddd;box-sizing:border-box}
+        .btn-primary{background:#7b0000;color:#fff;border:none;border-radius:8px;box-shadow:0 6px 12px rgba(123,0,0,.25)}
+    </style>
 </head>
 <body>
-    <main class="main-background">
-        
-        <div class="container-content" style="max-width: 500px; text-align: center;"> 
-            
-            <h1 class="title-bordeaux" style="font-size: 2.5em; margin-bottom: 30px;">Registrar-se</h1>
+<main class="main-background">
+    <div class="container-content" style="max-width:640px;text-align:center">
+        <h1 class="title-bordeaux" style="font-size:2.2em;margin-bottom:18px">Registrar-se</h1>
 
-            <form id="register-form">
-                <div class="input-group">
-                    <input type="text" id="nome" placeholder="Seu nome completo / Razão Social" required>
-                </div>
-
-                <div class="input-group">
-                    <input type="email" id="email" placeholder="Seu e-mail" required>
-                </div>
-                
-                <div class="input-group">
-                    <input type="text" id="cpf_cnpj" placeholder="CPF ou CNPJ" required>
-                </div>
-                
-                <div class="input-group">
-                    <input type="password" id="senha" placeholder="Senha" required>
-                </div>
-                
-                <div class="input-group">
-                    <input type="password" id="confirma_senha" placeholder="Repita sua senha" required>
-                </div>
-
-                <div style="text-align: left; margin-top: -10px; margin-bottom: 20px; font-size: 0.9em;">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">Concordo com os Termos de Serviço</label>
-                </div>
-
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    Registrar
-                </button>
-            </form>
-
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                <p>Já tem conta?</p>
-                <a href="login.html" style="color: var(--color-primary); font-weight: bold;">Faça Login</a>
+        <form id="register-form" novalidate>
+            <div style="text-align:left;margin-bottom:12px">
+                <label class="group-title">Tipo de Conta</label>
+                <label><input type="radio" name="tipo" value="associado" checked> Associado</label>
+                <label style="margin-left:12px"><input type="radio" name="tipo" value="comerciante"> Comerciante</label>
             </div>
+
+            <div class="form-row">
+                <label for="nome">Nome completo / Razão Social</label>
+                <div class="input-group"><input type="text" id="nome" placeholder="Seu nome completo / Razão Social" required></div>
+                <div id="nome_error" class="helper-error">Nome obrigatório.</div>
+            </div>
+
+            <div class="form-row">
+                <label for="email">E-mail</label>
+                <div class="input-group"><input type="email" id="email" placeholder="Seu e-mail" required></div>
+                <div id="email_error" class="helper-error">E-mail inválido.</div>
+            </div>
+
+            <div class="form-row">
+                <label id="label-identificador" for="cpf_cnpj">CPF</label>
+                <div class="input-group"><input type="text" id="cpf_cnpj" placeholder="CPF ou CNPJ" required></div>
+                <div id="cpf_error" class="helper-error">CPF/CNPJ inválido.</div>
+            </div>
+
+            <div class="form-row">
+                <label for="senha">Senha</label>
+                <div class="input-group"><input type="password" id="senha" placeholder="Senha (mín. 6 caracteres)" required></div>
+                <div id="senha_error" class="helper-error">Senha deve ter no mínimo 6 caracteres.</div>
+            </div>
+
+            <div class="form-row">
+                <label for="confirma_senha">Confirme a senha</label>
+                <div class="input-group"><input type="password" id="confirma_senha" placeholder="Repita sua senha" required></div>
+                <div id="confirma_error" class="helper-error">Senhas não coincidem.</div>
+            </div>
+
+            <div id="associado_fields">
+                <div class="form-row">
+                    <label for="dtn">Data de nascimento</label>
+                    <div class="input-group"><input type="date" id="dtn" required></div>
+                    <div id="dtn_error" class="helper-error">Data de nascimento obrigatória.</div>
+                </div>
+
+                <div class="form-row">
+                    <label for="endereco">Endereço</label>
+                    <div class="input-group"><input type="text" id="endereco" placeholder="Endereço completo" required></div>
+                    <div id="end_error" class="helper-error">Endereço obrigatório.</div>
+                </div>
+
+                <div class="form-row side-by-side">
+                    <div class="input-group">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" placeholder="Bairro" required>
+                        <div id="bairro_error" class="helper-error">Bairro obrigatório.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" placeholder="Apenas números" required>
+                        <div id="cep_error" class="helper-error">CEP obrigatório (8 dígitos).</div>
+                    </div>
+                </div>
+
+                <div class="form-row side-by-side">
+                    <div class="input-group">
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" placeholder="Cidade" required>
+                        <div id="cidade_error" class="helper-error">Cidade obrigatória.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="uf">UF</label>
+                        <input type="text" id="uf" placeholder="SP" maxlength="2" required>
+                        <div id="uf_error" class="helper-error">UF deve ter 2 letras.</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label for="celular">Celular</label>
+                    <div class="input-group"><input type="text" id="celular" placeholder="(11) 9xxxx-xxxx" required></div>
+                    <div id="cel_error" class="helper-error">Celular obrigatório.</div>
+                </div>
+            </div>
+
+            <div id="comerciante_fields" class="hidden">
+                <div class="form-row">
+                    <label for="categoria">Categoria</label>
+                    <div class="input-group">
+                        <select id="categoria" required>
+                            <option value="">Carregando categorias...</option>
+                        </select>
+                    </div>
+                    <div id="categoria_error" class="helper-error">Categoria obrigatória.</div>
+                </div>
+
+                <div class="form-row">
+                    <label for="razao_social">Razão social</label>
+                    <div class="input-group"><input type="text" id="razao_social" placeholder="Razão social (CNPJ)" required></div>
+                    <div id="razao_error" class="helper-error">Razão social obrigatória.</div>
+                </div>
+
+                <div class="form-row">
+                    <label for="nome_fantasia">Nome fantasia</label>
+                    <div class="input-group"><input type="text" id="nome_fantasia" placeholder="Nome fantasia" required></div>
+                    <div id="fantasia_error" class="helper-error">Nome fantasia obrigatório.</div>
+                </div>
+
+                <div class="form-row">
+                    <label for="end_comercio">Endereço</label>
+                    <div class="input-group"><input type="text" id="end_comercio" placeholder="Endereço do comércio" required></div>
+                    <div id="endcom_error" class="helper-error">Endereço obrigatório.</div>
+                </div>
+
+                <div class="form-row side-by-side">
+                    <div class="input-group">
+                        <label for="bairro_comercio">Bairro</label>
+                        <input type="text" id="bairro_comercio" placeholder="Bairro" required>
+                        <div id="bairrocom_error" class="helper-error">Bairro obrigatório.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="cep_comercio">CEP</label>
+                        <input type="text" id="cep_comercio" placeholder="CEP" required>
+                        <div id="cepcom_error" class="helper-error">CEP obrigatório (8 dígitos).</div>
+                    </div>
+                </div>
+
+                <div class="form-row side-by-side">
+                    <div class="input-group">
+                        <label for="cidade_comercio">Cidade</label>
+                        <input type="text" id="cidade_comercio" placeholder="Cidade" required>
+                        <div id="cidadecom_error" class="helper-error">Cidade obrigatória.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="uf_comercio">UF</label>
+                        <input type="text" id="uf_comercio" placeholder="SP" maxlength="2" required>
+                        <div id="ufcom_error" class="helper-error">UF deve ter 2 letras.</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label for="tel_comercio">Telefone</label>
+                    <div class="input-group"><input type="text" id="tel_comercio" placeholder="(11) 3333-4444" required></div>
+                    <div id="telcom_error" class="helper-error">Telefone obrigatório.</div>
+                </div>
+            </div>
+
+            <div style="text-align:left;margin-top:8px;margin-bottom:20px;font-size:0.9em">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">Concordo com os Termos de Serviço</label>
+                <div id="terms_error" class="helper-error">É necessário concordar com os Termos.</div>
+            </div>
+            <div id="app-message" class="app-message hidden" role="status" aria-live="polite"></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;padding:12px;font-weight:700">Registrar</button>
+        </form>
+
+        <div style="margin-top:22px;padding-top:18px;border-top:1px solid #eee">
+            <p>Já tem conta?</p>
+            <a href="login.html" style="color:var(--color-primary);font-weight:bold">Faça Login</a>
         </div>
-    </main>
-    <script src="../js/auth.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/register.js"></script>
+    </div>
+</main>
+
+<script src="../js/auth.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/register.js"></script>
 </body>
 </html>

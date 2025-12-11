@@ -1,32 +1,44 @@
 :root {
-    --color-primary: #8B0000; 
-    --color-secondary: #D4AF37; 
-    
-    --color-success: #28a745; 
+    --color-primary: #8B0000;
+    --color-secondary: #D4AF37;
+
+    --color-success: #28a745;
     --color-error: #dc3545;
-    
+
     --color-verde-salvia: #A8B3A7;
     --color-creme: #FAF0E6;
     --color-azul-marinho: #1A237E;
     --color-text-dark: #333333;
     --color-text-light: #FFFFFF;
+
+    --space-xs: 6px;
+    --space-sm: 10px;
+    --space-md: 16px;
+    --space-lg: 24px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: "Arial", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-body, html {
+html, body {
     height: 100%;
+    color: var(--color-text-dark);
+    background: transparent;
 }
 
 .main-background {
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     padding: 40px 20px;
     min-height: 100vh;
     z-index: 1;
@@ -38,29 +50,22 @@ body, html {
 .main-background::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     pointer-events: none;
     background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='48' viewBox='0 -960 960 960' width='48'%3E%3Cpath fill='%23D4AF37' d='M440-800v-80h80v80h-80Zm80 240v-80h240v-80H520v-80h-80v80H200v80h240v80h80Zm0 240v-80h240v-80H520v-80h-80v80H200v80h240v80h80Zm-80 80q-33 0-56.5-23.5T400-360v-240H200v240q0 33 23.5 56.5T280-280h400q33 0 56.5-23.5T760-360v-240H560v240q0 33-23.5 56.5T480-280H440Z'/%3E%3C/svg%3E");
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='48' viewBox='0 -960 960 960' width='48'%3E%3Cpath fill='%23D4AF37' d='M440-800v-80h80v80h-80Zm80 240v-80h240v-80H520v-80h-80v80H200v80h240v80h80Zm0 240v-80h240v-80H520v-80h-80v80H200v80h240v80h80Zm-80 80q-33 0-56.5-23.5T400-360v-240H200v240q0 33 23.5 56.5T280-280h400q33 0 56.5-23.5T760-360v-240H560v240q0 33-23.5 56.5T480-280H440Z'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 150px 150px;
-    background-position: 0 0;
     opacity: 0.08;
 }
 
 .main-background::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     pointer-events: none;
     background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='48' viewBox='0 -960 960 960' width='48'%3E%3Cpath fill='%23A8B3A7' d='M480-200q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-200Zm120-120 170-170q17-17 17-42.5t-17-42.5L594-720q17-17 42.5-17t42.5 17L850-570q17 17 17 42.5t-17 42.5L640-320ZM480-480q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-480ZM480-480q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-480Z'/%3E%3C/svg%3E");
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='48' viewBox='0 -960 960 960' width='48'%3E%3Cpath fill='%23A8B3A7' d='M480-200q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-200Zm120-120 170-170q17-17 17-42.5t-17-42.5L594-720q17-17 42.5-17t42.5 17L850-570q17 17 17 42.5t-17 42.5L640-320ZM480-480q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-480ZM480-480q-50 0-85-35t-35-85v-560h80v560q0 17 11.5 28.5T480-480Z'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 80px 80px;
     background-position: 50px 50px;
@@ -68,109 +73,131 @@ body, html {
 }
 
 .container-content {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 30px 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.98);
+    padding: var(--space-lg);
+    border-radius: 14px;
+    box-shadow: 0 12px 36px rgba(15, 15, 15, 0.12);
     width: 100%;
-    max-width: 800px;
+    max-width: 760px;
     z-index: 2;
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 
 .content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #efefef;
 }
 
-.separator-line {
-    height: 1px;
-    background-color: #eee;
-    margin: 20px 0;
-}
-
-/* 4. TÍTULOS E TIPOGRAFIA */
 .title-bordeaux {
     font-family: 'Playfair Display', serif;
     color: var(--color-primary);
     font-weight: 700;
+    line-height: 1.05;
 }
 
-/* 5. ESTILOS DE FORMULÁRIO E INPUTS */
-.input-group {
-    margin-bottom: 20px;
-}
+.form-row { margin-bottom: 12px; text-align: left; }
+.form-row label { display:block; font-weight:600; margin-bottom:8px; font-size:0.95rem; color:var(--color-text-dark); }
+.input-group { margin-bottom: 0; }
 
-input[type="text"], 
-input[type="password"], 
-input[type="number"], 
+input[type="text"],
+input[type="password"],
+input[type="number"],
 input[type="email"],
 input[type="date"],
-select {
+select, textarea {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
-
-input:focus, select:focus {
-    border-color: var(--color-secondary);
+    padding: 12px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    color: var(--color-text-dark);
+    background: #fff;
+    transition: border-color .18s ease, box-shadow .18s ease;
+    box-shadow: none;
     outline: none;
 }
 
+input::placeholder, textarea::placeholder { color: #bdbdbd; }
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(139,0,0,0.08);
+    outline: none;
+}
+
+.side-by-side { display:flex; gap:10px; }
+.side-by-side .input-group { flex:1; }
+
+.helper-error { color: var(--color-error); font-size: 0.86rem; margin-top:6px; display:none; }
+.helper-success { color: var(--color-success); font-size: 0.86rem; margin-top:6px; display:none; }
+
 .btn {
+    display: inline-block;
     text-decoration: none;
-    padding: 12px 25px;
-    border-radius: 6px;
-    font-weight: bold;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 700;
     text-transform: uppercase;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    transition: background-color 0.18s, transform 0.12s, box-shadow 0.18s;
     border: none;
     cursor: pointer;
     text-align: center;
 }
 
+.app-message {
+    max-width: 680px;
+    margin: 0 auto 16px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: opacity .2s, transform .2s;
+    opacity: 1;
+}
+.app-message.hidden { display: none; opacity: 0; transform: translateY(-6px); }
+.app-message.success { background: #E8F6EE; color: #116633; border: 1px solid rgba(25, 140, 80, 0.08); }
+.app-message.error   { background: #FDECEA; color: #8B0000; border: 1px solid rgba(200, 40, 40, 0.08); }
+
 .btn-primary, .btn.vermelho {
     background-color: var(--color-primary);
     color: var(--color-creme);
-    box-shadow: 0 4px 10px rgba(139, 0, 0, 0.4);
+    box-shadow: 0 8px 18px rgba(139, 0, 0, 0.18);
 }
 
 .btn-primary:hover, .btn.vermelho:hover {
-    background-color: #A50000;
+    background-color: #7a0000;
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(139, 0, 0, 0.6);
+    box-shadow: 0 10px 22px rgba(139, 0, 0, 0.22);
 }
 
 .btn-secondary, .btn.dourado {
     background-color: var(--color-secondary);
     color: var(--color-azul-marinho);
-    border: 2px solid var(--color-secondary);
-    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 6px 14px rgba(212,175,55,0.12);
 }
 
 .btn-secondary:hover, .btn.dourado:hover {
     background-color: #E2BC4B;
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(212, 175, 55, 0.6);
+    box-shadow: 0 8px 18px rgba(212,175,55,0.18);
 }
 
 .icon-btn {
     background: none;
     border: 1px solid var(--color-secondary);
-    border-radius: 5px;
+    border-radius: 6px;
     color: var(--color-secondary);
-    padding: 10px;
+    padding: 8px;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
 }
 
 .icon-btn:hover {
@@ -179,21 +206,44 @@ input:focus, select:focus {
 }
 
 .cupom-list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid #f0f0f0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid #f6f6f6;
 }
 
-.tag-status-ativo { color: var(--color-success); font-weight: bold; }
-.tag-status-utilizado { color: var(--color-secondary); font-weight: bold; }
-.tag-status-vencido { color: var(--color-error); font-weight: bold; }
+.tag-status-ativo { color: var(--color-success); font-weight: 700; }
+.tag-status-utilizado { color: var(--color-secondary); font-weight: 700; }
+.tag-status-vencido { color: var(--color-error); font-weight: 700; }
 
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+    font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+}
+
+@media (max-width: 900px) {
+    .container-content { padding: 20px; margin: 12px; }
+    .side-by-side { gap: 8px; flex-direction: row; }
+}
+
+@media (max-width: 560px) {
+    .container-content { padding: 16px; border-radius: 10px; }
+    .side-by-side { flex-direction: column; }
+    .title-bordeaux { font-size: 1.6rem; }
+    input[type="text"], input[type="email"], input[type="password"], select {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+}
+
+a { color: var(--color-primary); text-decoration: underline; }
+a:hover { opacity: 0.9; }
+
+:focus-visible {
+    outline: 3px solid rgba(139, 0, 0, 0.12);
+    outline-offset: 2px;
 }
