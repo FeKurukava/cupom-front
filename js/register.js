@@ -68,64 +68,7 @@
     function maskCEP(v){ return cleanNumber(v).slice(0,8); }
     function maskPhone(v){ return cleanNumber(v).slice(0,15); }
 
-    async function apiRequestFallback(path, opts = {}) {
-        if (typeof window.apiRequest === "function") {
-            try { return await window.apiRequest(path, opts); }
-            catch(e){ throw e; }
-        }
-
-        const fetchOpts = {
-            method: opts.method || "GET",
-            headers: Object.assign({}, opts.headers || {})
-        };
-
-        if (opts.body) {
-            if (opts.body instanceof FormData) {
-                fetchOpts.body = opts.body;
-            } else if (typeof opts.body === "string") {
-                fetchOpts.body = opts.body;
-                if (!fetchOpts.headers["Content-Type"]) fetchOpts.headers["Content-Type"] = "application/json";
-            } else {
-                fetchOpts.body = JSON.stringify(opts.body);
-                if (!fetchOpts.headers["Content-Type"]) fetchOpts.headers["Content-Type"] = "application/json";
-            }
-        }
-
-        const res = await fetch(path, fetchOpts);
-        const text = await res.text();
-        let data = null;
-        try { data = text ? JSON.parse(text) : null; } catch(e){ data = text; }
-        if (!res.ok) {
-            const err = { status: res.status, body: data };
-            throw err;
-        }
-        return data;
-    }
-
-    async function postWithFallback(paths, opts = {}) {
-        const base = (API_BASE && API_BASE.trim()) ? API_BASE.replace(/\/$/, "") : "";
-        const tried = [];
-
-        for (const p of paths) {
-            const url = (/^https?:\/\//i.test(p)) ? p : (base ? `${base}${p.startsWith('/') ? p : '/' + p}` : p);
-            tried.push(url);
-            console.log("Tentando POST em:", url);
-            try {
-                const res = await apiRequestFallback(url, opts);
-                return res;
-            } catch (err) {
-                console.warn("Falha nesse endpoint:", url, err);
-                if (err && err.status === 404) {
-                    continue;
-                } else {
-                    throw err;
-                }
-            }
-        }
-
-        const e = { status: 404, body: `Nenhum endpoint válido encontrado. Tentei: ${tried.join(", ")}` };
-        throw e;
-    }
+    // Removido fallback genérico; usar apiRequest definido em js/api.js
 
     function updateFormByTipo(tipo){
         const associado = document.getElementById("associado_fields");
@@ -175,7 +118,7 @@
                 if(!sel) return;
                 sel.innerHTML = '<option value="">Carregando...</option>';
                 try {
-                    const data = await apiRequestFallback((API_BASE ? API_BASE.replace(/\/$/,'') : '') + "/categoria", { method: "GET" });
+                    const data = await apiRequest('/categoria', { method: 'GET' });
                     if(Array.isArray(data) && data.length>0){
                         sel.innerHTML = '<option value="">Selecione uma categoria</option>';
                         data.forEach(c => {
@@ -255,16 +198,10 @@
                             senAssociado: senha
                         };
 
-                        const candidatePathsAssociado = [
-                            "/auth/register/associado",
-                            "/auth/associado",
-                            "/register/associado",
-                            "/associado",
-                            "/api/auth/register/associado",
-                            "/api/associado"
-                        ];
-
-                        const res = await postWithFallback(candidatePathsAssociado, { method: "POST", body });
+                        const res = await apiRequest('/auth/register/associado', {
+                            method: 'POST',
+                            body: JSON.stringify(body)
+                        });
                         console.log("Cadastro associado - resposta:", res);
                         showAppMessage("Cadastro de associado realizado com sucesso!", "success", 2500);
                         setTimeout(() => { window.location.href = "login.html"; }, 1000);
@@ -306,16 +243,10 @@
                             senComercio: senha
                         };
 
-                        const candidatePathsComerciante = [
-                            "/auth/register/comerciante",
-                            "/auth/comerciante",
-                            "/register/comerciante",
-                            "/comerciante",
-                            "/api/auth/register/comerciante",
-                            "/api/comerciante"
-                        ];
-
-                        const res = await postWithFallback(candidatePathsComerciante, { method: "POST", body });
+                        const res = await apiRequest('/auth/register/comerciante', {
+                            method: 'POST',
+                            body: JSON.stringify(body)
+                        });
                         console.log("Cadastro comerciante - resposta:", res);
                         showAppMessage("Cadastro de comerciante realizado com sucesso!", "success", 2500);
                         setTimeout(() => { window.location.href = "login.html"; }, 1000);
