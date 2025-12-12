@@ -188,21 +188,17 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 8px 18px rgba(212,175,55,0.18);
 }
 
-.icon-btn {
-    background: none;
-    border: 1px solid var(--color-secondary);
-    border-radius: 6px;
-    color: var(--color-secondary);
-    padding: 8px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.icon-btn, .btn.dourado {
+    background-color: var(--color-secondary);
+    color: var(--color-azul-marinho);
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 6px 14px rgba(212,175,55,0.12);
 }
 
 .icon-btn:hover {
-    background-color: var(--color-secondary);
-    color: var(--color-azul-marinho);
+    background-color: #E2BC4B;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(212,175,55,0.18);
 }
 
 .cupom-list-item {

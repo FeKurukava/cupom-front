@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Uso do cupom registrado.");
       input.value = "";
     } catch (e) {
-      const msg = (e && (e.body?.message || e.body?.error || e.body?.detail)) || "Falha ao conectar ao servidor.";
+      const msg = (e && (e.body?.message || e.body?.erro || e.body?.detail)) || "Falha ao conectar ao servidor.";
       alert(msg);
     } finally {
       btn.disabled = false;
