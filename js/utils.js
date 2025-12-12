@@ -15,3 +15,8 @@ function fazerLogout() {
     localStorage.removeItem("token");
     window.location.href = "login.html";
 }
+
+function limparDocumento(cpfCnpj) {
+    if (cpfCnpj == null) return null;
+    return cpfCnpj.replace(/[^0-9]/g, '');
+}

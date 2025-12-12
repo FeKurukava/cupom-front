@@ -44,30 +44,30 @@
             
             <div style="display: flex; gap: 10px; margin-bottom: 30px;">
                 <select id="category-filter" style="flex-grow: 1; padding: 15px;">
-                    <option value="">Pesquisar por Categoria do Comércio</option>
-                    <option value="1">Alimentação</option>
-                    <option value="2">Supermercado</option>
-                    <option value="3">Saúde e Beleza</option>
-                    <option value="4">Moda e Vestuário</option>
-                    <option value="5">Serviços</option>
-                    <option value="6">Educação</option>
-                    <option value="7">Tecnologia</option>
-                    <option value="8">Lazer e Entretenimento</option>
+                    <option value="">Carregando categorias...</option>
                 </select>
                 <button class="btn btn-primary" id="search-btn" style="padding: 12px 20px;">
                     <span class="material-symbols-outlined">Buscar</span>
                 </button>
             </div>
             
-            <div id="available-cupons-list">
-                <p style="text-align: center; color: var(--color-text-dark); padding: 40px;">
-                    Nenhum cupom encontrado. Use o filtro de categoria para pesquisar cupons disponíveis.
-                </p>
-            </div>
+            <section style="margin-bottom: 20px;">
+                <h2 class="title-bordeaux" style="font-size: 1.2em;">Comércios</h2>
+                <div id="comercios-container">
+                    <p style="text-align: center; color: var(--color-text-dark); padding: 30px;">Carregando comércios...</p>
+                </div>
+            </section>
+
+            <section>
+                <h2 id="cupons-title" class="title-bordeaux" style="font-size: 1.2em; display: none;">Cupons do Comércio</h2>
+                <div id="cupons-container"></div>
+            </section>
         </div>
     </main>
 
+    <script src="../../js/api.js"></script>
     <script src="../../js/auth.js"></script>
+    <script src="../../js/utils.js"></script>
     <script src="../../js/associado.js"></script>
 </body>
 </html>

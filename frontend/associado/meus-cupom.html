@@ -46,11 +46,11 @@
                     Filtros de status e ordenação:
                 </p>
                 <select id="status-filter-associado" style="width: 250px; padding: 10px;">
-                    <option value="ativos">Ativos (a utilizar)</option>
+                    <option value="ativos">Reservados (falta comércio aprovar o uso)</option>
                     <option value="utilizados">Utilizados</option>
-                    <option value="vencidos">Vencidos e Não Utilizados</option>
+                    <option value="vencidos">Vencidos</option>
                 </select>
-                <button class="btn btn-secondary" style="padding: 10px 15px;">
+                <button id="apply-status-associado" class="btn btn-secondary" style="padding: 10px 15px;">
                     <span class="material-symbols-outlined">Aplicar</span>
                 </button>
             </div>
@@ -63,7 +63,9 @@
         </div>
     </main>
 
+    <script src="../../js/api.js"></script>
     <script src="../../js/auth.js"></script>
-    <script src="../../js/associado.js"></script>
+    <script src="../../js/utils.js"></script>
+    <script src="../../js/associado-meus-cupom.js"></script>
 </body>
 </html>

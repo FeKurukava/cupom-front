@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const usuario = typeof obterUsuarioLogado === "function" ? obterUsuarioLogado() : null;
         const cnpj = usuario?.cnpj;
 
+        console.log(cnpj, "cnpj")
         if (!cnpj) {
             msg.textContent = "Sessão expirada ou CNPJ não encontrado. Faça login novamente.";
             msg.style.color = "var(--color-error)";

@@ -1,85 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    const filterBtn = document.getElementById('filter-icon-btn');
-    const filterDropdown = document.getElementById('filter-dropdown');
     const applyFiltersBtn = document.getElementById('apply-filters-btn');
     const statusFilter = document.getElementById('status-filter');
     const cuponsContainer = document.getElementById('cupons-container');
-    
-    
-    filterBtn.addEventListener('click', () => {
-        const isVisible = filterDropdown.style.display !== 'none';
-        filterDropdown.style.display = isVisible ? 'none' : 'block';
-    });
+    const listTitle = document.getElementById('list-title');
 
-    
-    const loadAndRenderCupons = async (statusFilterValue = 'ativos') => {
-        cuponsContainer.innerHTML = '<p>Buscando cupons...</p>';
-        
+    function tituloPorStatus(s) {
+        if (s === 'utilizados') return 'Cupons Utilizados';
+        if (s === 'vencidos') return 'Cupons Vencidos';
+        return 'Cupons Ativos';
+    }
 
-        try {
-            
-            const cuponsData = [
-                { status: 'Ativo', tit_cupom: 'Desconto de Natal', comercio: 'Panificadora Delícia', num_cupom: 'XYZ123456789', data_reserva: '05/12/2025' },
-                { status: 'Ativo', tit_cupom: '50% em Doces', comercio: 'Chocolateria Glamour', num_cupom: 'ABC098765432', data_reserva: '01/12/2025' },
-                { status: 'Utilizado', tit_cupom: 'Corte de Cabelo', comercio: 'Barbearia Clássica', data_reserva: '20/11/2025', data_uso: '22/11/2025' },
-                { status: 'Vencido', tit_cupom: 'Lavagem de Carro', comercio: 'Lava Rápido Pingo', data_reserva: '10/10/2025', data_vencimento: '30/11/2025' },
-            ];
-            
-            const grupos = {
-                'Ativos': cuponsData.filter(c => c.status === 'Ativo'),
-                'Encerrados': cuponsData.filter(c => c.status !== 'Ativo'),
-            };
-
-            cuponsContainer.innerHTML = ''; 
-
-            if (grupos.Ativos.length > 0) {
-                renderGroup('Cupons Ativos (A Utilizar)', grupos.Ativos, 'active');
-            }
-
-            if (grupos.Encerrados.length > 0) {
-                renderGroup('Cupons Encerrados (Utilizados e Vencidos)', grupos.Encerrados, 'closed');
-            }
-
-            if (grupos.Ativos.length === 0 && grupos.Encerrados.length === 0) {
-                 cuponsContainer.innerHTML = '<p style="text-align: center; color: var(--color-text-dark); margin-top: 50px;">Não possui cupons.</p>';
-            }
-
-        } catch (error) {
-            cuponsContainer.innerHTML = `<p class="message-error" style="text-align: center; color: var(--color-error); margin-top: 50px;">Erro ao carregar cupons: ${error.message}</p>`;
+    function fmtDate(v) {
+        if (!v) return '';
+        if (Array.isArray(v) && v.length >= 3) {
+            const y = v[0];
+            const m = v[1];
+            const d = v[2];
+            return String(d).padStart(2, '0') + '/' + String(m).padStart(2, '0') + '/' + y;
         }
-    };
+        const d = new Date(v);
+        return isNaN(d.getTime()) ? '' : d.toLocaleDateString('pt-BR');
+    }
 
-    
-    const renderGroup = (title, list, status) => {
-        const section = document.createElement('section');
-        section.classList.add('cupom-group-section', `${status}-group`);
-        section.innerHTML = `<h2>${title}</h2>`;
-        
-        list.forEach(cupom => {
-             const item = document.createElement('div');
-             item.classList.add('cupom-list-item');
-             item.innerHTML = `
-                 <div class="cupom-info">
-                     <strong>${cupom.tit_cupom}</strong>
-                     <div class="cupom-details">
-                         Comerciante: ${cupom.comercio} | Reservado em: ${cupom.data_reserva}
-                     </div>
-                 </div>
-                 ${cupom.num_cupom ? `<span class="cupom-code-display">${cupom.num_cupom}</span>` : ''}
-                 ${cupom.data_uso ? `<span class="cupom-details">Usado em: ${cupom.data_uso}</span>` : ''}
-                 ${cupom.data_vencimento ? `<span class="cupom-details" style="color: var(--color-error);">Vencido em: ${cupom.data_vencimento}</span>` : ''}
-             `;
-             section.appendChild(item);
+    function fmtPerc(v) {
+        if (v === null || v === undefined) return '';
+        const n = Number(v);
+        if (isNaN(n)) return '';
+        return (n).toString().replace('.', ',') + '%';
+    }
+
+    async function carregar(status) {
+        cuponsContainer.innerHTML = '<p id="loading-message">Carregando seus cupons...</p>';
+        const user = typeof obterUsuarioLogado === 'function' ? obterUsuarioLogado() : null;
+        const cnpj = user && user.cnpj ? user.cnpj : '';
+        if (!cnpj) {
+            cuponsContainer.innerHTML = '<p style="text-align:center; margin-top:40px;">Usuário não identificado.</p>';
+            return;
+        }
+        listTitle.textContent = tituloPorStatus(status);
+        try {
+            const data = await apiRequest(`/comercio/${encodeURIComponent(limparDocumento(cnpj))}?status=${encodeURIComponent(status)}`);
+            renderizar(Array.isArray(data) ? data : []);
+        } catch (err) {
+            console.error(err);
+            const detail = err && (err.body?.message || err.body?.erro || err.body?.detail);
+            const msg = detail ? `Erro: ${detail}` : 'Falha ao conectar ao servidor.';
+            cuponsContainer.innerHTML = `<p style="text-align:center; color: var(--color-error); margin-top:40px;">${msg}</p>`;
+        }
+    }
+
+    function renderizar(lista) {
+        cuponsContainer.innerHTML = '';
+        if (!Array.isArray(lista) || lista.length === 0) {
+            cuponsContainer.innerHTML = '<p style="text-align:center; margin-top:40px;">Não há cupons para os filtros selecionados.</p>';
+            return;
+        }
+        lista.forEach(c => {
+            const item = document.createElement('div');
+            item.className = 'cupom-list-item';
+            const periodo = [fmtDate(c.dtaInicioCupom), fmtDate(c.dtaTerminoCupom)].filter(Boolean).join(' - ');
+            const info = document.createElement('div');
+            info.className = 'cupom-info';
+            info.innerHTML = `
+                <strong>${c.tituloCupom || ''}</strong>
+                <div class="cupom-details">
+                    ${periodo ? `Válido: ${periodo}` : ''}
+                    ${c.perDescCupom != null ? ` | Desconto: ${fmtPerc(c.perDescCupom)}` : ''}
+                    ${c.qntCupom != null ? ` | Quantidade: ${c.qntCupom}` : ''}
+                </div>
+            `;
+            item.appendChild(info);
+            if (c.numCupom) {
+                const code = document.createElement('span');
+                code.className = 'cupom-code-display';
+                code.textContent = c.numCupom;
+                item.appendChild(code);
+            }
+            cuponsContainer.appendChild(item);
         });
-        cuponsContainer.appendChild(section);
-    };
-
-    
-    loadAndRenderCupons(statusFilter.value); 
+    }
 
     applyFiltersBtn.addEventListener('click', () => {
-        filterDropdown.style.display = 'none'; 
-        loadAndRenderCupons(statusFilter.value);
+        carregar(statusFilter.value || 'ativos');
     });
+
+    carregar(statusFilter.value || 'ativos');
 });

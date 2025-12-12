@@ -1,53 +1,40 @@
-function setSession(token, userType, identifier) {
-    if (!identifier) identifier = "";
-
-    const docLimpo = identifier.replace(/\D/g, "");
-    const tipo = (userType || "").toUpperCase();
-
-    const usuario = { tipo };
-
-    if (tipo === "ASSOCIADO") {
-        usuario.cpf = docLimpo;
-    } else if (tipo === "COMERCIANTE") {
-        usuario.cnpj = docLimpo;
-    }
-
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-}
+// auth.js
+// Responsável apenas por validar sessão e redirecionar entre páginas.
+// Não utiliza token. Usuário logado = CPF (associado) ou CNPJ (comerciante) salvo em localStorage.
 
 function obterUsuarioLogado() {
-    const dados = localStorage.getItem("usuarioLogado");
-    if (!dados) return null;
-
+    // Chave única usada no projeto para sessão
+    // Mantém compatibilidade caso exista dado antigo em 'usuarioLogado'
     try {
-        return JSON.parse(dados);
+        const dados = localStorage.getItem("usuario");
+        if (dados) return JSON.parse(dados);
+
+        const legado = localStorage.getItem("usuarioLogado");
+        return legado ? JSON.parse(legado) : null;
     } catch (e) {
-        console.error("Erro ao ler usuarioLogado:", e);
+        console.error("Erro ao ler usuário do localStorage:", e);
         return null;
     }
-}
-
-function clearSession() {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("usuarioLogado");
 }
 
 function redirecionarPeloTipo() {
     const user = obterUsuarioLogado();
     if (!user) return;
 
-    if (user.tipo === "ASSOCIADO") {
-        window.location.href = "associado/home.html";
-    } else if (user.tipo === "COMERCIANTE") {
-        window.location.href = "comerciante/home.html";
+    const path = window.location.pathname;
+    // Se já estamos dentro de /frontend/, podemos usar caminhos relativos diretos
+    const base = path.includes("/frontend/") ? "" : "frontend/";
+
+    if (String(user.tipo).toUpperCase() === "ASSOCIADO") {
+        window.location.href = base + "associado/home.html";
+    } else if (String(user.tipo).toUpperCase() === "COMERCIANTE") {
+        window.location.href = base + "comerciante/home.html";
     }
 }
 
 function checkAuthenticationAndRedirect() {
-    if (window.location.protocol === "file:") {
-        return;
-    }
+    // Em ambiente file:// não faz redirecionamento automático
+    if (window.location.protocol === "file:") return;
 
     const user = obterUsuarioLogado();
     const path = window.location.pathname;
@@ -55,102 +42,42 @@ function checkAuthenticationAndRedirect() {
     const isLoginPage =
         path.endsWith("index.html") ||
         path.endsWith("/") ||
+        path.endsWith("/frontend/login.html") ||
         path.endsWith("login.html");
 
     const isProtectedPage =
-        path.includes("/associado/") ||
-        path.includes("/comerciante/");
+        path.includes("/frontend/associado/") ||
+        path.includes("/frontend/comerciante/");
 
+    // Se já está logado e acessou login/index, mandar para home correta
     if (user && isLoginPage) {
-        redirecionarPeloTipo();// js/auth.js
-
-        function setSession(token, userType, identifier) {
-            if (!identifier) identifier = "";
-
-            const docLimpo = identifier.replace(/\D/g, ""); // só números
-            const tipo = (userType || "").toUpperCase();
-
-            const usuario = { tipo };
-
-            if (tipo === "ASSOCIADO") {
-                usuario.cpf = docLimpo;
-            } else if (tipo === "COMERCIANTE") {
-                usuario.cnpj = docLimpo;
-            }
-
-            // guarda token e usuário logado
-            localStorage.setItem("authToken", token);
-            localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-        }
-
-        function obterUsuarioLogado() {
-            const dados = localStorage.getItem("usuarioLogado");
-            if (!dados) return null;
-
-            try {
-                return JSON.parse(dados);
-            } catch (e) {
-                console.error("Erro ao ler usuarioLogado:", e);
-                return null;
-            }
-        }
-
-        function clearSession() {
-            localStorage.removeItem("authToken");
-            localStorage.removeItem("usuarioLogado");
-        }
-
-        function redirecionarPeloTipo() {
-            const user = obterUsuarioLogado();
-            if (!user) return;
-
-            if (user.tipo === "ASSOCIADO") {
-                // partindo de /frontend/
-                window.location.href = "associado/home.html";
-            } else if (user.tipo === "COMERCIANTE") {
-                window.location.href = "comerciante/home.html";
-            }
-        }
-
-        function checkAuthenticationAndRedirect() {
-            if (window.location.protocol === "file:") {
-                return;
-            }
-
-            const user = obterUsuarioLogado();
-            const path = window.location.pathname;
-
-            const isLoginPage =
-                path.endsWith("index.html") ||
-                path.endsWith("/") ||
-                path.endsWith("login.html");
-
-            const isProtectedPage =
-                path.includes("/associado/") ||
-                path.includes("/comerciante/");
-
-            if (user && isLoginPage) {
-                redirecionarPeloTipo();
-                return;
-            }
-
-            if (!user && isProtectedPage) {
-                window.location.href = "../login.html";
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            checkAuthenticationAndRedirect();
-        });
-
+        redirecionarPeloTipo();
         return;
     }
 
+    // Se não está logado e está em página protegida, mandar para login
     if (!user && isProtectedPage) {
         window.location.href = "../login.html";
+        return;
+    }
+
+    // Se está logado mas entrou na área errada, corrigir rota
+    if (user && isProtectedPage) {
+        const tipo = String(user.tipo).toUpperCase();
+        const emAssociado = path.includes("/frontend/associado/");
+        const emComerciante = path.includes("/frontend/comerciante/");
+
+        if (tipo === "ASSOCIADO" && emComerciante) {
+            window.location.href = "../associado/home.html";
+            return;
+        }
+        if (tipo === "COMERCIANTE" && emAssociado) {
+            window.location.href = "../comerciante/home.html";
+            return;
+        }
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
     checkAuthenticationAndRedirect();
 });

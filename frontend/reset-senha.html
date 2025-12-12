@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha</title>
+    
+    <link rel="stylesheet" href="../css/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <main class="main-background">
+        
+        <div class="container-content" style="max-width: 450px;"> 
+            
+            <header class="content-header" style="border-bottom: none; margin-bottom: 0;">
+                <h1 class="title-bordeaux" style="font-size: 2em; flex-grow: 1; text-align: center;">Redefinir Senha</h1>
+            </header>
+            
+            <p style="text-align: center; margin-bottom: 20px; color: #666;">
+                Informe seu CPF (associado) ou CNPJ (comerciante) e defina a nova senha.
+            </p>
+
+            <form id="reset-form">
+                <div class="input-group">
+                    <input type="text" id="identifier" placeholder="CPF (Associado) ou CNPJ (Comerciante)" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="nova_senha" placeholder="Nova Senha" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="confirma_nova_senha" placeholder="Confirme a Nova Senha" required>
+                </div>
+                
+                <p id="reset-message" style="font-size: 0.95em; font-weight: 600; text-align: center; min-height: 1.2em;"></p>
+
+                <button type="submit" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">
+                    Confirmar Nova Senha
+                </button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                 <a href="login.html" style="color: var(--color-primary); font-weight: bold;">Voltar para o Login</a>
+            </div>
+        </div>
+    </main>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('reset-form');
+            const msg = document.getElementById('reset-message');
+            const btn = form ? form.querySelector('button[type="submit"]') : null;
+
+            function setMsg(text, type) {
+                if (!msg) return;
+                msg.textContent = text || '';
+                msg.style.color = type === 'error' ? 'var(--color-error)' : 'var(--color-success)';
+            }
+
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                setMsg('', '');
+
+                const identifier = (document.getElementById('identifier')?.value || '').trim();
+                const senha = (document.getElementById('nova_senha')?.value || '').trim();
+                const confirma = (document.getElementById('confirma_nova_senha')?.value || '').trim();
+
+                const doc = typeof limparDocumento === 'function' ? limparDocumento(identifier) : (identifier || '').replace(/\D/g, '');
+
+                if (!doc || (doc.length !== 11 && doc.length !== 14)) {
+                    setMsg('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válidos.', 'error');
+                    return;
+                }
+                if (!senha || senha.length < 6) {
+                    setMsg('A nova senha deve ter pelo menos 6 caracteres.', 'error');
+                    return;
+                }
+                if (senha !== confirma) {
+                    setMsg('A confirmação da senha não confere.', 'error');
+                    return;
+                }
+
+                if (btn) btn.disabled = true;
+                try {
+                    if (doc.length === 11) {
+                        // Associado
+                        await apiRequest('/auth/recuperar-senha', {
+                            method: 'POST',
+                            body: JSON.stringify({ cpf: doc, novaSenha: senha })
+                        });
+                    } else {
+                        // Comerciante
+                        await apiRequest('/auth/comerciante/recuperar-senha', {
+                            method: 'POST',
+                            body: JSON.stringify({ cnpj: doc, novaSenha: senha })
+                        });
+                    }
+                    setMsg('Senha redefinida com sucesso! Redirecionando para o login...', 'success');
+                    setTimeout(() => { window.location.href = 'login.html'; }, 1800);
+                    form.reset();
+                } catch (err) {
+                    console.error(err);
+                    const detail = err && (err.body?.message || err.body?.erro || err.body?.detail);
+                    setMsg(detail || 'Não foi possível redefinir a senha. Tente novamente.', 'error');
+                } finally {
+                    if (btn) btn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
