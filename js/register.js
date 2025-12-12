@@ -54,15 +54,6 @@
 
     function showError(id,msg){ const el=document.getElementById(id); if(!el) return; el.textContent=msg; el.style.display="block"; }
     function hideError(id){ const el=document.getElementById(id); if(!el) return; el.style.display="none"; }
-
-    function maskCPF_CNPJ(v){
-        const val = cleanNumber(v);
-        if(val.length <= 11){
-            return val.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, (m,a,b,c,d)=> a + (b?'.'+b:'') + (c?'.'+c:'') + (d?'-'+d:''));
-        } else {
-            return val.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, (m,a,b,c,d,e)=> a + (b?'.'+b:'') + (c?'.'+c:'') + (d?'/'+d:'') + (e?'-'+e:''));
-        }
-    }
     function maskCEP(v){ return cleanNumber(v).slice(0,8); }
     function maskPhone(v){ return cleanNumber(v).slice(0,15); }
 

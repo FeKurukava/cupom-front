@@ -1,10 +1,4 @@
-// auth.js
-// Responsável apenas por validar sessão e redirecionar entre páginas.
-// Não utiliza token. Usuário logado = CPF (associado) ou CNPJ (comerciante) salvo em localStorage.
-
 function obterUsuarioLogado() {
-    // Chave única usada no projeto para sessão
-    // Mantém compatibilidade caso exista dado antigo em 'usuarioLogado'
     try {
         const dados = localStorage.getItem("usuario");
         if (dados) return JSON.parse(dados);
@@ -22,7 +16,6 @@ function redirecionarPeloTipo() {
     if (!user) return;
 
     const path = window.location.pathname;
-    // Se já estamos dentro de /frontend/, podemos usar caminhos relativos diretos
     const base = path.includes("/frontend/") ? "" : "frontend/";
 
     if (String(user.tipo).toUpperCase() === "ASSOCIADO") {
@@ -33,7 +26,6 @@ function redirecionarPeloTipo() {
 }
 
 function checkAuthenticationAndRedirect() {
-    // Em ambiente file:// não faz redirecionamento automático
     if (window.location.protocol === "file:") return;
 
     const user = obterUsuarioLogado();
@@ -49,19 +41,16 @@ function checkAuthenticationAndRedirect() {
         path.includes("/frontend/associado/") ||
         path.includes("/frontend/comerciante/");
 
-    // Se já está logado e acessou login/index, mandar para home correta
     if (user && isLoginPage) {
         redirecionarPeloTipo();
         return;
     }
 
-    // Se não está logado e está em página protegida, mandar para login
     if (!user && isProtectedPage) {
         window.location.href = "../login.html";
         return;
     }
 
-    // Se está logado mas entrou na área errada, corrigir rota
     if (user && isProtectedPage) {
         const tipo = String(user.tipo).toUpperCase();
         const emAssociado = path.includes("/frontend/associado/");

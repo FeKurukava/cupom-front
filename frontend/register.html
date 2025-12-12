@@ -191,5 +191,67 @@
 <script src="../js/utils.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../js/register.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const input = document.getElementById("identifier");
+        if (!input) return;
+
+        input.addEventListener("input", function (e) {
+            const element = e.target;
+
+            const oldValue = element.value;
+            const oldCursor = element.selectionStart;
+
+            const digitsBefore = oldValue.slice(0, oldCursor).replace(/\D/g, "").length;
+
+            const masked = window.maskCPF_CNPJ(oldValue);
+            element.value = masked;
+
+            let cursor = 0, digitCount = 0;
+            while (digitCount < digitsBefore && cursor < masked.length) {
+                if (/\d/.test(masked[cursor])) digitCount++;
+                cursor++;
+            }
+
+            element.setSelectionRange(cursor, cursor);
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        function setupMask(inputId, maskFn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+
+            input.addEventListener("input", function (e) {
+                const el = e.target;
+
+                const oldValue = el.value;
+                const oldCursor = el.selectionStart;
+
+                const digitsBefore = oldValue.slice(0, oldCursor).replace(/\D/g, "").length;
+
+                const masked = maskFn(oldValue);
+                el.value = masked;
+
+                let cursor = 0, digitCount = 0;
+                while (digitCount < digitsBefore && cursor < masked.length) {
+                    if (/\d/.test(masked[cursor])) digitCount++;
+                    cursor++;
+                }
+                el.setSelectionRange(cursor, cursor);
+            });
+        }
+
+        setupMask("celular", window.maskPhoneNumber);
+        setupMask("tel_comercio", window.maskPhoneNumber);
+
+    });
+</script>
+
+
+
 </body>
 </html>

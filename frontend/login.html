@@ -59,6 +59,34 @@
     <script src="../js/utils.js"></script>
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("identifier");
+            if (!input) return;
+
+            input.addEventListener("input", function (e) {
+                const element = e.target;
+
+                const oldValue = element.value;
+                const oldCursor = element.selectionStart;
+
+                const digitsBefore = oldValue.slice(0, oldCursor).replace(/\D/g, "").length;
+                const masked = window.maskCPF_CNPJ(oldValue);
+                element.value = masked;
+
+                let cursor = 0, digitCount = 0;
+                while (digitCount < digitsBefore && cursor < masked.length) {
+                    if (/\d/.test(masked[cursor])) digitCount++;
+                    cursor++;
+                }
+
+                element.setSelectionRange(cursor, cursor);
+            });
+        });
+    </script>
+
+
+
+    <script>
         document.getElementById('login-form').addEventListener('submit', async function(event) {
             event.preventDefault();
 

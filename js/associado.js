@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 body: JSON.stringify({ cpfAssociado: cpf, numCupom })
             });
-            // Atualiza a lista após reservar
             if (ultimoComercio && ultimoComercio.cnpj) {
                 await carregarCuponsPorComercio(ultimoComercio.cnpj, ultimoComercio.nome);
             }
@@ -149,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             item.className = 'cupom-list-item';
 
-            // Bloco esquerdo (informações do cupom) - sem exibir Quantidade
             const left = document.createElement('div');
             left.className = 'cupom-info';
             left.innerHTML = `
@@ -161,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             item.appendChild(left);
 
-            // Bloco direito (código e botão Reservar)
             const right = document.createElement('div');
             right.style.display = 'flex';
             right.style.gap = '8px';
@@ -190,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchBtn) {
         searchBtn.addEventListener('click', () => {
-            // Endpoint fornecido não recebe categoria; recarrega lista completa.
             carregarComercios();
         });
     }
