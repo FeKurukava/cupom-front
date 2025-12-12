@@ -1,8 +1,6 @@
 
 (function () {
     "use strict";
-    const API_BASE = "http://localhost:8080";
-
     function cleanNumber(v){ return v ? v.replace(/\D/g, "") : ""; }
 
     function showAppMessage(text, type = "success", timeout = 4000) {
@@ -68,7 +66,6 @@
     function maskCEP(v){ return cleanNumber(v).slice(0,8); }
     function maskPhone(v){ return cleanNumber(v).slice(0,15); }
 
-    // Removido fallback genérico; usar apiRequest definido em js/api.js
 
     function updateFormByTipo(tipo){
         const associado = document.getElementById("associado_fields");
