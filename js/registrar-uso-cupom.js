@@ -11,8 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     btn.disabled = true;
     try {
-      // Endpoint correto usa RequestParam: POST /comercio/usar-cupom?numCupom=...
-      // Usamos apiRequest para padronizar headers e token.
       await apiRequest(`/comercio/usar-cupom?numCupom=${encodeURIComponent(code)}`, {
         method: "POST"
       });
