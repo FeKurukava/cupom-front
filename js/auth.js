@@ -1,4 +1,5 @@
 function obterUsuarioLogado() {
+    localStorage.clear();
     try {
         const dados = localStorage.getItem("usuario");
         if (dados) return JSON.parse(dados);
