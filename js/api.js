@@ -1,7 +1,7 @@
 const API_BASE_URL = window.API_URL || "http://localhost:8080";
 
 async function apiRequest(path, options = {}) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     const headers = {
         "Content-Type": "application/json",

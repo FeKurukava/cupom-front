@@ -1,13 +1,9 @@
 function obterUsuarioLogado() {
-    localStorage.clear();
     try {
-        const dados = localStorage.getItem("usuario");
-        if (dados) return JSON.parse(dados);
-
-        const legado = localStorage.getItem("usuarioLogado");
-        return legado ? JSON.parse(legado) : null;
+        const dados = sessionStorage.getItem("usuario");
+        return dados ? JSON.parse(dados) : null;
     } catch (e) {
-        console.error("Erro ao ler usuário do localStorage:", e);
+        console.error("Erro ao ler usuário do sessionStorage:", e);
         return null;
     }
 }
@@ -66,6 +62,28 @@ function checkAuthenticationAndRedirect() {
             return;
         }
     }
+}
+
+function fazerLogout() {
+    try {
+        sessionStorage.removeItem("usuario");
+        sessionStorage.removeItem("token");
+    } catch (e) {
+    }
+
+    const path = window.location.pathname;
+    const isInsideFrontend = path.includes("/frontend/");
+    const isInsideProtected = path.includes("/frontend/associado/") || path.includes("/frontend/comerciante/");
+
+    if (isInsideProtected) {
+        window.location.href = "../login.html";
+        return;
+    }
+    if (isInsideFrontend) {
+        window.location.href = "login.html";
+        return;
+    }
+    window.location.href = "frontend/login.html";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
