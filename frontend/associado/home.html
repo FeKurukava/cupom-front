@@ -69,10 +69,12 @@
     <script src="../../js/api.js"></script>
     <script src="../../js/auth.v4.js"></script>
     <script>
-        const user = obterUsuarioLogado();
-        if (!user) {
-            window.location.href = "/frontend/login.html";
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = obterUsuarioLogado();
+            if (!user) {
+                window.location.href = "/frontend/login.html";
+            }
+        });
     </script>
     <script src="../../js/utils.v4.js"></script>
     <script src="../../js/associado.js"></script>
