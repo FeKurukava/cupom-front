@@ -65,20 +65,12 @@ function checkAuthenticationAndRedirect() {
 }
 
 function getLoginUrl() {
-    const protocol = window.location.protocol;
-    const path = window.location.pathname;
-
-    if (protocol === "http:" || protocol === "https:") {
-        return `${window.location.origin}/frontend/login.html`;
+    if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+        return window.location.origin + "/frontend/login.html";
     }
-
-    const isInsideProtected = path.includes("/frontend/associado/") || path.includes("/frontend/comerciante/");
-    const isInsideFrontend = path.includes("/frontend/");
-
-    if (isInsideProtected) return "../login.html";
-    if (isInsideFrontend) return "login.html";
     return "frontend/login.html";
 }
+
 
 function fazerLogout() {
     try {
