@@ -1,7 +1,3 @@
-function salvarUsuarioLogado(dados) {
-    sessionStorage.setItem("usuario", JSON.stringify(dados));
-}
-
 function limparDocumento(cpfCnpj) {
     if (cpfCnpj == null) return null;
     return cpfCnpj.replace(/[^0-9]/g, '');
