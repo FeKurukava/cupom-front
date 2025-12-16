@@ -56,7 +56,9 @@
     <script src="../../js/auth.v4.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            console.log('DOM carregado');
             const user = obterUsuarioLogado();
+            console.log(user, "user")
             if (!user) {
                 window.location.href = "/frontend/login.html";
             }
