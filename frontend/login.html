@@ -120,7 +120,7 @@
                 });
 
                 sessionStorage.setItem("token", resp.token);
-                salvarUsuarioLogado({ tipo: "COMERCANTE", cnpj: identifier });
+                salvarUsuarioLogado({ tipo: "COMERCIANTE", cnpj: identifier });
                 window.location.href = "comerciante/home.html";
 
             } catch (error) {
