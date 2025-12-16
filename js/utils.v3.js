@@ -2,14 +2,6 @@ function salvarUsuarioLogado(dados) {
     sessionStorage.setItem("usuario", JSON.stringify(dados));
 }
 
-function obterUsuarioLogado() {
-    try {
-        return JSON.parse(sessionStorage.getItem("usuario"));
-    } catch {
-        return null;
-    }
-}
-
 function limparDocumento(cpfCnpj) {
     if (cpfCnpj == null) return null;
     return cpfCnpj.replace(/[^0-9]/g, '');
