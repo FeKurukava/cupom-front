@@ -13,14 +13,17 @@ function redirecionarPeloTipo() {
     if (!user) return;
 
     const path = window.location.pathname;
-    const base = path.includes("/frontend/") ? "" : "frontend/";
+    const tipo = String(user.tipo).toUpperCase();
 
-    if (String(user.tipo).toUpperCase() === "ASSOCIADO") {
-        window.location.href = base + "associado/home.html";
-    } else if (String(user.tipo).toUpperCase() === "COMERCIANTE") {
-        window.location.href = base + "comerciante/home.html";
+    if (tipo === "ASSOCIADO" && !path.includes("/frontend/associado/")) {
+        window.location.href = "/frontend/associado/home.html";
+    }
+
+    if (tipo === "COMERCIANTE" && !path.includes("/frontend/comerciante/")) {
+        window.location.href = "/frontend/comerciante/home.html";
     }
 }
+
 
 function checkAuthenticationAndRedirect() {
     if (window.location.protocol === "file:") return;
@@ -30,7 +33,6 @@ function checkAuthenticationAndRedirect() {
 
     const isLoginPage =
         path.endsWith("index.html") ||
-        path.endsWith("/") ||
         path.endsWith("/frontend/login.html") ||
         path.endsWith("login.html");
 
