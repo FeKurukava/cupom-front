@@ -32,39 +32,41 @@ function checkAuthenticationAndRedirect() {
     const path = window.location.pathname;
 
     const isLoginPage =
-        path.endsWith("index.html") ||
-        path.endsWith("/frontend/login.html") ||
-        path.endsWith("login.html");
+        path === "/frontend/" ||
+        path === "/frontend/login.html" ||
+        path.endsWith("/login.html");
 
-    const isProtectedPage =
-        path.includes("/frontend/associado/") ||
-        path.includes("/frontend/comerciante/");
+    const isAssociadoPage = path.includes("/frontend/associado/");
+    const isComerciantePage = path.includes("/frontend/comerciante/");
+    const isProtectedPage = isAssociadoPage || isComerciantePage;
 
-    if (user && isLoginPage) {
-        redirecionarPeloTipo();
+    if (isLoginPage) {
+        if (user) {
+            redirecionarPeloTipo();
+        }
         return;
     }
 
-    if (!user && isProtectedPage) {
+    if (isProtectedPage && !user) {
         window.location.href = getLoginUrl();
         return;
     }
 
-    if (user && isProtectedPage) {
+    if (isProtectedPage && user) {
         const tipo = String(user.tipo).toUpperCase();
-        const emAssociado = path.includes("/frontend/associado/");
-        const emComerciante = path.includes("/frontend/comerciante/");
 
-        if (tipo === "ASSOCIADO" && emComerciante) {
-            window.location.href = "../associado/home.html";
+        if (tipo === "ASSOCIADO" && isComerciantePage) {
+            window.location.href = "/frontend/associado/home.html";
             return;
         }
-        if (tipo === "COMERCIANTE" && emAssociado) {
-            window.location.href = "../comerciante/home.html";
+
+        if (tipo === "COMERCIANTE" && isAssociadoPage) {
+            window.location.href = "/frontend/comerciante/home.html";
             return;
         }
     }
 }
+
 
 function getLoginUrl() {
     if (window.location.protocol === "http:" || window.location.protocol === "https:") {
