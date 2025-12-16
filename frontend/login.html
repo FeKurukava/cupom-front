@@ -108,7 +108,7 @@
 
                     sessionStorage.setItem("token", resp.token);
                     salvarUsuarioLogado({ tipo: "ASSOCIADO", cpf: identifier });
-                    window.location.href = "/frontend/associado/home.html";
+                    window.location.href = "associado/homev2.html";
                     return;
                 }
 
@@ -122,7 +122,7 @@
 
                 sessionStorage.setItem("token", resp.token);
                 salvarUsuarioLogado({ tipo: "COMERCIANTE", cnpj: identifier });
-                window.location.href = "/frontend/comerciante/home.html";
+                window.location.href = "comerciante/homev2.html";
 
             } catch (error) {
                 console.error(error);
